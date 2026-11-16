@@ -1,0 +1,67 @@
+/* 网页翻译 · DeepSeek —— Content Script 样式 */
+
+#ds-translator-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  max-width: 400px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #1f2937;
+  color: #f9fafb;
+  font-size: 13px;
+  line-height: 1.5;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  cursor: default;
+}
+
+#ds-translator-toast[data-kind='error'] {
+  background: #7f1d1d;
+}
+#ds-translator-toast[data-kind='success'] {
+  background: #14532d;
+}
+#ds-translator-toast[data-kind='warn'] {
+  background: #78350f;
+}
+
+#ds-translator-toast button {
+  flex: none;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+#ds-translator-toast button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 对照模式：原文以浅灰色附在译文后 */
+.ds-orig {
+  color: #9ca3af;
+  font-size: 0.88em;
+  opacity: 0.8;
+  margin-left: 0.3em;
+}
+
+/* 翻译中：轻微高亮 */
+.ds-pending {
+  transition: background-color 0.4s ease;
+  background-color: rgba(59, 130, 246, 0.07);
+  border-radius: 3px;
+}
+
+/* 翻译失败：红色下划虚线标记 */
+.ds-failed {
+  background-color: rgba(239, 68, 68, 0.08);
+  text-decoration: underline dotted rgba(239, 68, 68, 0.6);
+}

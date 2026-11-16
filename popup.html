@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <h1>网页翻译</h1>
+    <span id="status-dot" title="DeepSeek"></span>
+  </header>
+
+  <div id="key-status" class="banner hidden"></div>
+
+  <div class="btns">
+    <button id="btn-translate" class="primary">翻译本页</button>
+    <button id="btn-original">显示原文</button>
+    <button id="btn-retranslate">重新翻译</button>
+  </div>
+
+  <label class="row">
+    <span>模型</span>
+    <select id="model">
+      <option value="deepseek-chat">DeepSeek Chat（推荐）</option>
+      <option value="deepseek-reasoner">DeepSeek Reasoner（较慢）</option>
+    </select>
+  </label>
+
+  <footer>
+    <a href="#" id="open-options">设置（API Key）</a>
+    <span class="hint">快捷键 Alt+T</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

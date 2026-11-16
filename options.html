@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>网页翻译 · 设置</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>网页翻译 · DeepSeek 设置</h1>
+
+    <section>
+      <label for="apiKey">DeepSeek API Key</label>
+      <div class="key-row">
+        <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off" spellcheck="false" />
+        <button id="toggle-key" type="button" class="ghost">显示</button>
+      </div>
+      <p class="tip">
+        从
+        <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer">platform.deepseek.com</a>
+        创建 API Key。Key 仅保存在本地浏览器中，不会上传到任何第三方。
+      </p>
+    </section>
+
+    <section>
+      <label for="baseUrl">API 地址（Base URL）</label>
+      <input type="text" id="baseUrl" placeholder="https://api.deepseek.com/v1" spellcheck="false" />
+      <p class="tip">默认为 DeepSeek 官方接口。注意：扩展仅授予了 api.deepseek.com 的访问权限，填写其他地址需自行修改 manifest 的 host_permissions。</p>
+    </section>
+
+    <section>
+      <label for="model">模型</label>
+      <select id="model">
+        <option value="deepseek-chat">DeepSeek Chat（推荐，快）</option>
+        <option value="deepseek-reasoner">DeepSeek Reasoner（推理强，慢）</option>
+      </select>
+    </section>
+
+    <section>
+      <label>翻译模式</label>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="mode" value="replace" checked />仅译文</label>
+        <label class="radio"><input type="radio" name="mode" value="bilingual" />原文 + 译文对照</label>
+      </div>
+      <p class="tip">对照模式下，译文替换原文，原文以浅灰色附在译文之后。</p>
+    </section>
+
+    <section>
+      <label for="batchSize">每次请求合并条数（5 – 50）</label>
+      <input type="number" id="batchSize" min="5" max="50" step="5" value="30" />
+      <p class="tip">越大越省请求次数，但单次等待更久、超出输出上限的风险越高。</p>
+    </section>
+
+    <div class="actions">
+      <button id="save" class="primary">保存设置</button>
+      <button id="test" type="button" class="ghost">测试连接</button>
+      <button id="clear-cache" type="button" class="ghost">清空缓存</button>
+    </div>
+
+    <p id="msg" class="msg"></p>
+    <p class="tip">本地翻译缓存：<span id="cache-count">…</span> 条（相同文本再次翻译时直接命中，不消耗 API）</p>
+  </main>
+
+  <script src="options.js"></script>
+</body>
+</html>

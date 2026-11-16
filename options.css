@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: #f1f5f9;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  color: #0f172a;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  height: fit-content;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+label[for] {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+input[type='password'],
+input[type='text'],
+input[type='number'],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+input:focus,
+select:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.key-row {
+  display: flex;
+  gap: 8px;
+}
+.key-row input {
+  flex: 1;
+}
+
+.radios {
+  display: flex;
+  gap: 20px;
+  padding: 4px 0;
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.radio input {
+  accent-color: #2563eb;
+}
+
+.tip {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+.tip a {
+  color: #2563eb;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #334155;
+  transition: all 0.15s ease;
+}
+button.primary {
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+button.primary:hover {
+  filter: brightness(1.08);
+}
+button.ghost:hover {
+  background: #f1f5f9;
+}
+
+.msg {
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 20px;
+  word-break: break-all;
+}
+.msg.ok {
+  color: #16a34a;
+}
+.msg.error {
+  color: #dc2626;
+}
+.msg.info {
+  color: #2563eb;
+}
