@@ -217,4 +217,3 @@ function parseTranslations(content) {
   }
   return null;
 }
-
