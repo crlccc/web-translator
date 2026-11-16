@@ -75,7 +75,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         const tabId = msg.tabId != null ? msg.tabId : await getActiveTabId();
         if (tabId == null) return sendResponse({ ok: false, message: '找不到活动标签页' });
         const tab = await chrome.tabs.get(tabId);
-        if (tab.url && !/^https?:/i.test(tab.url)) {
+        if (tab.url && !/^(https?:|file:)/i.test(tab.url)) {
           return sendResponse({ ok: false, message: '此页面不支持翻译（浏览器内部页面 / 应用商店页面）' });
         }
         await ensureInjected(tabId);
@@ -217,3 +217,4 @@ function parseTranslations(content) {
   }
   return null;
 }
+
