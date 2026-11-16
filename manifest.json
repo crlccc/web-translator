@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "网页翻译 · DeepSeek",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "使用 DeepSeek 将网页翻译为简体中文：根据网页语境（按钮/导航/标题/正文）智能适配文风，支持原文对照、缓存与懒翻译。",
   "permissions": ["storage", "contextMenus", "activeTab", "scripting"],
   "host_permissions": ["https://api.deepseek.com/*"],

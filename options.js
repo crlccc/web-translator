@@ -4,7 +4,7 @@ const DEFAULTS = {
   apiKey: '',
   baseUrl: 'https://api.deepseek.com/v1',
   model: 'deepseek-chat',
-  mode: 'replace',
+  mode: 'bilingual',
   batchSize: 30,
 };
 
@@ -23,12 +23,11 @@ function setModel(value) {
 }
 
 function currentForm() {
-  const modeEl = document.querySelector('input[name="mode"]:checked');
   return {
     apiKey: $('apiKey').value.trim(),
     baseUrl: $('baseUrl').value.trim() || DEFAULTS.baseUrl,
     model: $('model').value,
-    mode: modeEl ? modeEl.value : 'replace',
+    mode: 'bilingual',
     batchSize: Math.max(5, Math.min(50, parseInt($('batchSize').value, 10) || 30)),
   };
 }
@@ -63,8 +62,6 @@ async function load() {
   $('apiKey').value = s.apiKey;
   $('baseUrl').value = s.baseUrl;
   setModel(s.model);
-  const modeEl = document.querySelector('input[name="mode"][value="' + s.mode + '"]');
-  if (modeEl) modeEl.checked = true;
   $('batchSize').value = s.batchSize;
   updateCacheCount();
 }

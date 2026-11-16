@@ -10,7 +10,7 @@
     apiKey: '',
     baseUrl: 'https://api.deepseek.com/v1',
     model: 'deepseek-chat',
-    mode: 'replace', // replace: 仅译文 | bilingual: 原文+译文对照
+    mode: 'bilingual', // 始终保留原文，并在原文后显示中文
     batchSize: 30,
     concurrency: 3,
   };
@@ -19,12 +19,12 @@
     'script', 'style', 'noscript', 'code', 'pre', 'textarea', 'svg', 'math',
     'iframe', 'canvas', 'object', 'embed', 'template',
     '[contenteditable=""]', '[contenteditable="true"]',
-    '.ds-orig', '.ds-skip', '#ds-translator-toast',
+    '.ds-trans', '.ds-skip', '#ds-translator-toast',
   ].join(', ');
 
   const ATTR_SELECTOR =
     'input[placeholder], input[type="button"], input[type="submit"], ' +
-    'textarea[placeholder], img[alt], [title]';
+    'textarea[placeholder], img[alt], [title], [aria-label]';
 
   const state = {
     settings: { ...DEFAULTS },
@@ -73,7 +73,7 @@
 
   async function loadSettings() {
     const stored = await chrome.storage.local.get(DEFAULTS);
-    state.settings = { ...DEFAULTS, ...stored };
+    state.settings = { ...DEFAULTS, ...stored, mode: 'bilingual' };
     return state.settings;
   }
   loadSettings();
@@ -87,6 +87,10 @@
     }
     if (state.translating) {
       setToast('正在翻译中，请稍候…', 'progress');
+      return;
+    }
+    if (state.translated.length) {
+      setToast('当前页面已显示原文和中文；如需更新译文，请使用“重新翻译”', 'success', { autoHide: 3500 });
       return;
     }
 
@@ -196,6 +200,7 @@
       if (el.hasAttribute('alt')) list.push(['alt', 'alt']);
     }
     if (el.hasAttribute('title')) list.push(['title', 'tooltip']);
+    if (el.hasAttribute('aria-label')) list.push(['aria-label', 'label']);
     return list;
   }
 
@@ -404,20 +409,20 @@
     state.applying = true;
     try {
       if (entry.type === 'attr') {
-        entry.translated = text;
-        entry.el.setAttribute(entry.attr, text);
+        entry.translated = composeAttributeText(entry.original, text, entry.attr);
+        entry.el.setAttribute(entry.attr, entry.translated);
       } else {
-        // 保留首尾空白，避免破坏排版
-        const lead = (entry.original.match(/^\s*/) || [''])[0];
-        const trail = (entry.original.match(/\s*$/) || [''])[0];
-        entry.translated = lead + text + trail;
-        entry.node.nodeValue = entry.translated;
-        if (state.settings.mode === 'bilingual' && text !== entry.original.trim()) {
+        // 原文节点保持不动，中文紧邻原文插入，保证逐条对应且可完整恢复。
+        entry.translated = text;
+        if (text !== entry.original.trim()) {
           const span = document.createElement('span');
-          span.className = 'ds-orig';
-          span.textContent = entry.original.trim();
+          const block = /(?:sentence|paragraph)$/.test(entry.context) &&
+            !/^(button|link|nav|label|table-header|option),/.test(entry.context);
+          span.className = 'ds-trans' + (block ? ' ds-trans-block' : '');
+          span.lang = 'zh-CN';
+          span.textContent = text;
           if (entry.node.parentNode) entry.node.parentNode.insertBefore(span, entry.node.nextSibling);
-          entry.origSpan = span;
+          entry.transSpan = span;
         }
       }
       state.translated.push(entry);
@@ -426,6 +431,13 @@
       state.applying = false;
     }
     updateProgressToast();
+  }
+
+  function composeAttributeText(original, translated, attr) {
+    const source = String(original || '').trim();
+    if (!source || source === translated) return source || translated;
+    // title 支持换行，更容易看清原文与中文；其他单行属性使用斜杠分隔。
+    return attr === 'title' ? source + '\n中文：' + translated : source + ' / ' + translated;
   }
 
   function failEntry(entry, reason) {
@@ -498,12 +510,10 @@
         try {
           if (e.type === 'attr') {
             if (e.el.getAttribute(e.attr) === e.translated) e.el.setAttribute(e.attr, e.original);
-          } else {
-            if (e.node.nodeValue === e.translated) e.node.nodeValue = e.original;
           }
-          if (e.origSpan) {
-            e.origSpan.remove();
-            e.origSpan = null;
+          if (e.transSpan) {
+            e.transSpan.remove();
+            e.transSpan = null;
           }
         } catch (err) {}
       }

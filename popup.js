@@ -4,7 +4,7 @@ const DEFAULTS = {
   apiKey: '',
   baseUrl: 'https://api.deepseek.com/v1',
   model: 'deepseek-chat',
-  mode: 'replace',
+  mode: 'bilingual',
   batchSize: 30,
 };
 
